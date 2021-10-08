@@ -28,18 +28,22 @@
             - virtualenv
 
         - name: Adding flake8 plugins
-          command: pipx inject --include-apps --include-deps flake8 \
+          command: pipx inject flake8 \
             flake8-broken-line \
             flake8-bugbear \
             flake8-commas \
             flake8-comprehensions \
             flake8-eradicate \
             flake8-fixme \
-            flake8-isort \
             flake8-polyfill \
             flake8-sfs \
             flake8-type-annotations \
-            pep8-naming \
+            pep8-naming
+          when: pipx.results[2].changed == true
+
+        - name: Adding flake8 plugins with apps
+          command: pipx inject --include-apps --include-deps flake8 \
+            flake8-isort \
             pyproject-flake8
           when: pipx.results[2].changed == true
 
