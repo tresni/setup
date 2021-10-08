@@ -1,0 +1,7 @@
+#! /usr/bin/env python3
+
+import json
+import subprocess
+
+output = subprocess.check_output(["code", "--list-extensions"], text=True).splitlines()
+print(json.dumps(output))
