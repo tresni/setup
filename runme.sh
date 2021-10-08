@@ -51,3 +51,6 @@ else
 fi
 . .venv/bin/activate
 ansible-playbook setup.yml
+
+# We should be all set to load into zsh
+exec /usr/bin/env zsh -l
