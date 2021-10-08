@@ -37,7 +37,7 @@ cask "deckset"
 cask "discord"
 cask "docker"
 cask "dropbox"
-cask "force-paste"
+cask "force-paste", args: { "no-quarantine": true }
 cask "gpg-suite"
 cask "hex-fiend"
 cask "iterm2"

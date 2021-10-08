@@ -1,7 +1,7 @@
-#! /usr/bin/bash
+#! /usr/bin/env bash
 
-sudo -K
-sudo true
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 if hash brew 2>/dev/null; then
 	echo "Homebrew is already installed!"
@@ -39,9 +39,15 @@ else
 		echo "Failed to install dotfiles."
 		exit 1
 	fi
+    echo "Running ~/.macos"
+    ~/.macos
 fi
 
-poetry install -n --no-root --no-dev
+if [ -d .venv ]; then
+    echo "Looks like python environment is here"
+else
+    echo "Installing all the python dependancies"
+    poetry install -n --no-root --no-dev
+fi
 . .venv/bin/activate
-
 ansible-playbook setup.yml

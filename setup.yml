@@ -2,11 +2,11 @@
 - name: Setup
   hosts: localhost
   tasks:
-    - name: Gather custom facts
+    - name: Gathering custom facts
       setup:
         fact_path: "facts.d"
 
-    - name: Configure sudo to accept touch ID
+    - name: Configuring sudo to accept touch ID
       become: yes
       lineinfile:
         path: /etc/pam.d/sudo
@@ -14,38 +14,40 @@
         firstmatch: yes
         line: auth       sufficient     pam_tid.so
 
-    - name: Install pipx packages
-      command:
-        cmd: pipx install {{item}}
-        creates: ~/.local/bin/{{item}}
-      register: pipx
-      loop:
-        - bandit
-        - black
-        - flake8
-        - virtualenv
+    - name: Setting up pipx packages
+      block:
+        - name: Installing root packages
+          command:
+            cmd: pipx install {{item}}
+            creates: ~/.local/bin/{{item}}
+          register: pipx
+          loop:
+            - bandit
+            - black
+            - flake8
+            - virtualenv
 
-    - name: Add flake8 plugins
-      command: pipx inject --include-apps --include-deps flake8 \
-        flake8-broken-line \
-        flake8-bugbear \
-        flake8-commas \
-        flake8-comprehensions \
-        flake8-eradicate \
-        flake8-fixme \
-        flake8-isort \
-        flake8-polyfill \
-        flake8-sfs \
-        flake8-type-annotations \
-        pep8-naming \
-        pyproject-flake8
-      when: pipx.results[2].changed == true
+        - name: Adding flake8 plugins
+          command: pipx inject --include-apps --include-deps flake8 \
+            flake8-broken-line \
+            flake8-bugbear \
+            flake8-commas \
+            flake8-comprehensions \
+            flake8-eradicate \
+            flake8-fixme \
+            flake8-isort \
+            flake8-polyfill \
+            flake8-sfs \
+            flake8-type-annotations \
+            pep8-naming \
+            pyproject-flake8
+          when: pipx.results[2].changed == true
 
-    - name: Add virtualenvwrapper to virtualenv
-      command: pipx inject --include-apps virtualenv virtualenvwrapper
-      when: pipx.results[3].changed == true
+        - name: Adding virtualenvwrapper to virtualenv
+          command: pipx inject --include-apps virtualenv virtualenvwrapper
+          when: pipx.results[3].changed == true
 
-    - name: Install vscode plugins
+    - name: Installing vscode plugins
       command: code --install-extension {{item}}
       loop:
         - ban.troff
