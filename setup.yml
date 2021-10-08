@@ -1,0 +1,11 @@
+---
+- name: Setup
+  hosts: localhost
+  tasks:
+    - name: Configure sudo to accept touch ID
+      become: yes
+      lineinfile:
+        path: /etc/pam.d/sudo
+        insertafter: ^auth
+        firstmatch: yes
+        line: auth       sufficient     pam_tid.so
