@@ -1,0 +1,35 @@
+---
+- name: Installing pipx packages
+  command:
+    cmd: pipx install {{ item }}
+    creates: ~/.local/bin/{{ item }}
+  register: pipx
+  loop:
+    - bandit
+    - black
+    - flake8
+    - virtualenv
+
+- name: Adding flake8 plugins to flake8 pipx
+  command: pipx inject flake8 \
+    flake8-broken-line \
+    flake8-bugbear \
+    flake8-commas \
+    flake8-comprehensions \
+    flake8-eradicate \
+    flake8-fixme \
+    flake8-polyfill \
+    flake8-sfs \
+    flake8-type-annotations \
+    pep8-naming
+  when: pipx.results[2].changed
+
+- name: Adding flake8 plugins with apps to flake8 pipx
+  command: pipx inject --include-apps --include-deps flake8 \
+    flake8-isort \
+    pyproject-flake8
+  when: pipx.results[2].changed
+
+- name: Adding virtualenvwrapper to virtualenv pipx
+  command: pipx inject --include-apps virtualenv virtualenvwrapper
+  when: pipx.results[3].changed

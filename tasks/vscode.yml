@@ -1,0 +1,31 @@
+---
+- name: Installing vscode plugins
+  command: code --install-extension {{ item }}
+  loop:
+    - ban.troff
+    - bbenoist.vagrant
+    - bungcip.better-toml
+    - dracula-theme.theme-dracula
+    - esbenp.prettier-vscode
+    - felixfbecker.php-debug
+    - golang.go
+    - hashicorp.terraform
+    - lextudio.restructuredtext
+    - lonefy.vscode-JS-CSS-HTML-formatter
+    - ms-azuretools.vscode-docker
+    - ms-python.python
+    - ms-python.vscode-pylance
+    - ms-toolsai.jupyter
+    - ms-vscode-remote.remote-containers
+    - ms-vscode-remote.remote-ssh
+    - ms-vscode-remote.remote-ssh-edit
+    - ms-vscode.cmake-tools
+    - ms-vscode.cpptools
+    - ms-vscode.makefile-tools
+    - ms-vsliveshare.vsliveshare
+    - rubbersheep.gi
+    - samuelcolvin.jinjahtml
+    - searKing.preview-vscode
+    - tht13.html-preview-vscode
+    - twxs.cmake
+  when: item not in ansible_local["vscode-extensions"]

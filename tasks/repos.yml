@@ -1,0 +1,21 @@
+---
+- name: Clone git repos
+  git:
+    repo: "{{ item.repo }}"
+    dest: ~/Projects/{{ item.name }}
+    version: "{% if item.branch is defined %}{{ item.branch }}{% else %}HEAD{% endif %}"
+  loop:
+    # - {repo: "git@github.com:tresni/acme.sh.git", name: "acme.sh"}
+    # - {repo: "git@github.com:tresni/pyHurricaneDNS.git", name: "pyHurricaneDNS"}
+    - {repo: "git@github.com:tresni/transmission-tuneup.git", name: "transmission-tuneup"}
+    - {repo: "git@github.com:tresni/infra.git", name: "infra"}
+    # - {repo: "https://github.com/AlexanderWillner/runMacOSinVirtualBox.git", name: "runMacOSinVirtualBox"}
+    - {repo: "https://github.com/SirFlip/mcrcon.git", name: "mcrcon", branch: "develop"}
+    # - {repo: "https://github.com/JElchison/format-udf.git", name: "format-udf"}
+    # - {repo: "git://thekelleys.org.uk/dnsmasq.git", name: "dnsmasq"}
+    - {repo: "https://github.com/iamadamdev/bypass-paywalls-chrome.git", name: "bypass-paywalls-chrome"}
+    # - {repo: "https://github.com/dracula/dracula-theme.git", name: ""}
+    - {repo: "https://github.com/dracula/alfred.git", name: "dracula/alfred"}
+    - {repo: "https://github.com/dracula/iterm.git", name: "dracula/iterm"}
+    - {repo: "https://github.com/dracula/sequel-pro.git", name: "dracula/sequel-pro"}
+    - {repo: "https://github.com/dracula/xcode.git", name: "dracula/xcode"}

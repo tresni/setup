@@ -7,121 +7,18 @@
         fact_path: "facts.d"
 
     - name: Configuring sudo to accept touch ID
-      become: yes
+      become: true
       lineinfile:
         path: /etc/pam.d/sudo
         insertafter: ^auth
-        firstmatch: yes
+        firstmatch: true
         line: auth       sufficient     pam_tid.so
 
-    - name: Setting up pipx packages
-      block:
-        - name: Installing root packages
-          command:
-            cmd: pipx install {{item}}
-            creates: ~/.local/bin/{{item}}
-          register: pipx
-          loop:
-            - bandit
-            - black
-            - flake8
-            - virtualenv
-
-        - name: Adding flake8 plugins
-          command: pipx inject flake8 \
-            flake8-broken-line \
-            flake8-bugbear \
-            flake8-commas \
-            flake8-comprehensions \
-            flake8-eradicate \
-            flake8-fixme \
-            flake8-polyfill \
-            flake8-sfs \
-            flake8-type-annotations \
-            pep8-naming
-          when: pipx.results[2].changed == true
-
-        - name: Adding flake8 plugins with apps
-          command: pipx inject --include-apps --include-deps flake8 \
-            flake8-isort \
-            pyproject-flake8
-          when: pipx.results[2].changed == true
-
-        - name: Adding virtualenvwrapper to virtualenv
-          command: pipx inject --include-apps virtualenv virtualenvwrapper
-          when: pipx.results[3].changed == true
-
-    - name: Installing vscode plugins
-      command: code --install-extension {{item}}
-      loop:
-        - ban.troff
-        - bbenoist.vagrant
-        - bungcip.better-toml
-        - dracula-theme.theme-dracula
-        - esbenp.prettier-vscode
-        - felixfbecker.php-debug
-        - golang.go
-        - hashicorp.terraform
-        - lextudio.restructuredtext
-        - lonefy.vscode-JS-CSS-HTML-formatter
-        - ms-azuretools.vscode-docker
-        - ms-python.python
-        - ms-python.vscode-pylance
-        - ms-toolsai.jupyter
-        - ms-vscode-remote.remote-containers
-        - ms-vscode-remote.remote-ssh
-        - ms-vscode-remote.remote-ssh-edit
-        - ms-vscode.cmake-tools
-        - ms-vscode.cpptools
-        - ms-vscode.makefile-tools
-        - ms-vsliveshare.vsliveshare
-        - rubbersheep.gi
-        - samuelcolvin.jinjahtml
-        - searKing.preview-vscode
-        - tht13.html-preview-vscode
-        - twxs.cmake
-      when: item not in ansible_local["vscode-extensions"]
-
-    - name: Clone git repos
-      git:
-        repo: "{{item.repo}}"
-        dest: ~/Projects/{{ item.name }}
-        version: "{% if item.branch is defined %}{{item.branch}}{% else %}HEAD{% endif %}"
-      loop:
-        # - { repo: "git@github.com:tresni/acme.sh.git", name: "acme.sh" }
-        # - { repo: "git@github.com:tresni/pyHurricaneDNS.git", name: "pyHurricaneDNS" }
-        - {
-            repo: "git@github.com:tresni/transmission-tuneup.git",
-            name: "transmission-tuneup",
-          }
-        - { repo: "git@github.com:tresni/infra.git", name: "infra" }
-        # - { repo: "https://github.com/AlexanderWillner/runMacOSinVirtualBox.git", name: "runMacOSinVirtualBox" }
-        - {
-            repo: "https://github.com/SirFlip/mcrcon.git",
-            name: "mcrcon",
-            branch: "develop",
-          }
-        # - { repo: "https://github.com/JElchison/format-udf.git", name: "format-udf" }
-        # - { repo: "git://thekelleys.org.uk/dnsmasq.git", name: "dnsmasq" }
-        - {
-            repo: "https://github.com/iamadamdev/bypass-paywalls-chrome.git",
-            name: "bypass-paywalls-chrome",
-          }
-        # - { repo: "https://github.com/dracula/dracula-theme.git", name: "" }
-        - {
-            repo: "https://github.com/dracula/alfred.git",
-            name: "dracula/alfred",
-          }
-        - {
-            repo: "https://github.com/dracula/iterm.git",
-            name: "dracula/iterm",
-          }
-        - {
-            repo: "https://github.com/dracula/sequel-pro.git",
-            name: "dracula/sequel-pro",
-          }
-        - {
-            repo: "https://github.com/dracula/xcode.git",
-            name: "dracula/xcode",
-          }
-# - { repo: "https://github.com/FastForwardTeam/FastForward.git", name: "" }
+    - name: repos
+      import_tasks: tasks/repos.yml
+    - name: pipx
+      import_tasks: tasks/pipx.yml
+    - name: vscode
+      import_tasks: tasks/vscode.yml
+    - name: fastfoward
+      import_tasks: tasks/fastforward.yml

@@ -1,0 +1,27 @@
+- name: Create FastForward directory
+  file:
+    path: ~/Projects/FastForward
+    state: directory
+    mode: 0755
+
+- name: Download FastForward
+  get_url:
+    url: https://nightly.link/FastForwardTeam/FastForward/workflows/main/main/FastForward_chromium.zip
+    dest: ~/Projects/FastForward/FastForward_chromium.zip
+  register: ffdownload
+
+- name: Unarchive FastForward outer archive
+  unarchive:
+    remote_src: true
+    src: ~/Projects/FastForward/FastForward_chromium.zip
+    dest: ~/Projects/FastForward/
+    list_files: true
+  when: ffdownload.changed
+  register: ffarchive
+
+- name: Unarchive FastForward outer archive
+  unarchive:
+    remote_src: true
+    src: "{{ ffarchive.dest }}{{ ffarchive.files[0] }}"
+    dest: "{{ ffarchive.dest }}"
+  when: ffdownload.changed
