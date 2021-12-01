@@ -14,6 +14,10 @@
         firstmatch: true
         line: auth       sufficient     pam_tid.so
 
+    - name: Check .netrc permissions
+      file:
+        path: ~/.netrc
+        mode: 0700
     - name: repos
       import_tasks: tasks/repos.yml
     - name: pipx
