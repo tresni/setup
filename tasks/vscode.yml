@@ -11,7 +11,6 @@
     - golang.go
     - hashicorp.terraform
     - lextudio.restructuredtext
-    - lonefy.vscode-JS-CSS-HTML-formatter
     - ms-azuretools.vscode-docker
     - ms-python.python
     - ms-python.vscode-pylance
