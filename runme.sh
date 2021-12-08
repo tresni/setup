@@ -76,12 +76,7 @@ else
     ~/.macos
 fi
 
-if [ -d .venv ]; then
-    echo "Looks like python environment is here"
-else
-    echo "Installing all the python dependancies"
-    poetry install -n --no-root --no-dev
-fi
+poetry install -n --no-root --no-dev
 . .venv/bin/activate
 ansible-playbook setup.yml
 
