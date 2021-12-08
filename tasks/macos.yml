@@ -1,0 +1,21 @@
+- name: Configuring sudo to accept touch ID
+  become: true
+  lineinfile:
+    path: /etc/pam.d/sudo
+    insertafter: ^auth
+    firstmatch: true
+    line: auth       sufficient     pam_tid.so
+
+- name: Check .netrc permissions
+  file:
+    path: ~/.netrc
+    mode: 0700
+
+- name: Configure default $PATH
+  become: true
+  copy:
+    mode: '0644'
+    owner: root
+    group: wheel
+    src: files/etc/paths
+    dest: /etc/paths
