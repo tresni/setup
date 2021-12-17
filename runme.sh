@@ -59,10 +59,11 @@ else
 	fi
 fi
 
+RUN_MACOS=no
 if [ -e ~/.dotfiles ]; then
     echo "dotfiles are already installed"
 else
-    if [ -e ~/.zshrc]; then
+    if [ -e ~/.zshrc ]; then
 		echo "backing up ~/.zshrc to ~/.zshrc_setup"
 		mv ~/.zshrc ~/.zshrc_setup
 	fi
@@ -72,13 +73,14 @@ else
 		echo "Failed to install dotfiles."
 		exit 1
 	fi
-    echo "Running ~/.macos"
-    ~/.macos
+	RUN_MACOS=yes
 fi
 
 poetry install -n --no-root --no-dev
 . .venv/bin/activate
 ansible-playbook setup.yml
 
-# We should be all set to load into zsh
-exec /usr/bin/env zsh -l
+# This is going to kill iTerm/Terminal/etc so ...
+if [ $RUN_MACOS = "yes" ]; then
+	~/.macos
+fi
