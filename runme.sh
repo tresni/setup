@@ -25,6 +25,11 @@ if ! validate_keys; then
 	exit 1
 fi
 
+# Check if Rossetta is needed/installed
+if [ "$CPUTYPE" = "arm64" ] && ! [ -e "/usr/libexec/rosetta" ]; then
+	sudo softwareupdate --install-rosetta --agree-to-license
+fi
+
 if hash brew 2>/dev/null; then
 	echo "Homebrew is already installed!"
 else
