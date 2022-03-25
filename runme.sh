@@ -40,17 +40,11 @@ else
 		echo "Failed to install homebrew."
 		exit 1
 	fi
+	eval $(/usr/local/bin/brew shellenv 2> /dev/null || /opt/homebrew/bin/brew shellenv)
 fi
 
-BREW_PATH=/usr/local/bin/brew
-
-if ! [ -e "$BREW_PATH" ]; then
-	BREW_PATH=/opt/homebrew/bin/brew
-fi
-
-
-"$BREW_PATH" bundle install --file=Brewfile --no-lock
-"$BREW_PATH" cleanup
+brew bundle install --file=Brewfile --no-lock
+brew cleanup
 
 if [ -e ~/.oh-my-zsh ]; then
     echo "Oh My ZSH already installed"
