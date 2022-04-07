@@ -7,7 +7,6 @@
     - bungcip.better-toml
     - dracula-theme.theme-dracula
     - esbenp.prettier-vscode
-    - felixfbecker.php-debug
     - golang.go
     - hashicorp.terraform
     - lextudio.restructuredtext
@@ -27,4 +26,5 @@
     - searKing.preview-vscode
     - tht13.html-preview-vscode
     - twxs.cmake
+    - xdebug.php-debug
   when: item not in ansible_local["vscode-extensions"]
