@@ -75,7 +75,7 @@ else
 	RUN_MACOS=yes
 fi
 
-poetry install -n --no-root --no-dev
+poetry install -n --no-root --only main
 . ./.venv/bin/activate
 ansible-playbook setup.yml
 
