@@ -54,15 +54,15 @@ else
 	fi
 fi
 
-RUN_MACOS=no
-if [ -e ~/.dotfiles ]; then
-    echo "dotfiles are already installed"
+RUN_MACOS=${RUN_MACOS:-no}
+if chezmoi status; then
+    echo "chezmoi has been initialized"
 else
     if [ -e ~/.zshrc ]; then
 		echo "backing up ~/.zshrc to ~/.zshrc_setup"
 		mv ~/.zshrc ~/.zshrc_setup
 	fi
-	if ! curl -L http://bit.ly/tresni-dotfiles | bash ; then
+	if ! chezmoi init --apply tresni; then
 		echo "Failed to install dotfiles."
 		exit 1
 	fi
