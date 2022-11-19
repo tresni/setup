@@ -2,15 +2,12 @@ tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-drivers"
 tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
 tap "homebrew/core"
-<<<<<<< HEAD
 tap "homebrew/services"
 tap "microsoft/git"
-=======
-tap "homebrew/cask-versions"
 brew "python@3.9"
 brew "python@3.10"
->>>>>>> 21fc571 (Updating installed apps)
 brew "asciinema"
 brew "python@3.9"
 brew "awscli"
@@ -18,12 +15,9 @@ brew "bash"
 brew "colima"
 brew "coreutils"
 brew "dnscontrol"
-<<<<<<< HEAD
-brew "flarectl"
-=======
 brew "docker"
+brew "flarectl"
 brew "fd"
->>>>>>> 21fc571 (Updating installed apps)
 brew "git"
 brew "git-extras"
 brew "git-filter-repo"
@@ -40,11 +34,7 @@ brew "mtr"
 brew "nmap"
 brew "pipx"
 brew "poetry"
-<<<<<<< HEAD
-brew "redis", restart_service: true
-=======
 brew "terminal-notifier"
->>>>>>> 21fc571 (Updating installed apps)
 brew "the_silver_searcher"
 brew "weechat"
 brew "wget"
