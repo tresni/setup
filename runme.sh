@@ -34,13 +34,11 @@ if hash brew 2>/dev/null; then
 	echo "Homebrew is already installed!"
 else
 	echo "Installing Homebrew..."
-	yes '' | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	exit_status=$?
-	if [ $exit_status != 0 ]; then
+	if ! yes '' | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" ; then
 		echo "Failed to install homebrew."
 		exit 1
 	fi
-	eval $(/usr/local/bin/brew shellenv 2> /dev/null || /opt/homebrew/bin/brew shellenv)
+	eval "$(/usr/local/bin/brew shellenv 2> /dev/null || /opt/homebrew/bin/brew shellenv)"
 fi
 
 brew bundle install --file=Brewfile --no-lock
@@ -50,9 +48,7 @@ if [ -e ~/.oh-my-zsh ]; then
     echo "Oh My ZSH already installed"
 else
     echo "Installing Oh My ZSH"
-    RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    exit_status=$?
-	if [ $exit_status != 0 ]; then
+	if ! RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" ; then
 		echo "Failed to install Oh My ZSH."
 		exit 1
 	fi
@@ -66,9 +62,7 @@ else
 		echo "backing up ~/.zshrc to ~/.zshrc_setup"
 		mv ~/.zshrc ~/.zshrc_setup
 	fi
-    curl -L http://bit.ly/tresni-dotfiles | bash
-    exit_status=$?
-	if [ $exit_status != 0 ]; then
+	if ! curl -L http://bit.ly/tresni-dotfiles | bash ; then
 		echo "Failed to install dotfiles."
 		exit 1
 	fi
