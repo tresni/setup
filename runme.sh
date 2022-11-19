@@ -70,7 +70,10 @@ else
 fi
 
 poetry install -n --no-root --only main
+
+# shellcheck source=/dev/null
 . ./.venv/bin/activate
+
 ansible-playbook setup.yml
 
 # This is going to kill iTerm/Terminal/etc so ...
