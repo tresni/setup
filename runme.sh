@@ -55,7 +55,7 @@ else
 fi
 
 RUN_MACOS=${RUN_MACOS:-no}
-if chezmoi status; then
+if chezmoi status > /dev/null ; then
     echo "chezmoi has been initialized"
 else
     if [ -e ~/.zshrc ]; then
