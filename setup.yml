@@ -12,5 +12,3 @@
       import_tasks: tasks/repos.yml
     - name: pipx
       import_tasks: tasks/pipx.yml
-    - name: fastfoward
-      import_tasks: tasks/fastforward.yml
