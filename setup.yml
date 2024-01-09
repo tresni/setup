@@ -12,7 +12,5 @@
       import_tasks: tasks/repos.yml
     - name: pipx
       import_tasks: tasks/pipx.yml
-    - name: vscode
-      import_tasks: tasks/vscode.yml
     - name: fastfoward
       import_tasks: tasks/fastforward.yml
