@@ -6,8 +6,9 @@
   changed_when: false
   ignore_errors: true
   loop:
+    - "node"
     - "@opentabs-dev/cli"
-    - "typescript"
+    - "@mermaid-js/mermaid-cli"
 
 - name: Install packages via volta
   ansible.builtin.command: volta install "{{ item.item }}"

@@ -1,8 +1,3 @@
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/core"
-tap "homebrew/services"
 brew "python@3.11"
 brew "asciinema"
 brew "awscli"
@@ -30,7 +25,6 @@ brew "ipcalc"
 brew "jc"
 brew "jq"
 brew "mas"
-brew "mermaid-cli"
 brew "mosh"
 brew "mtr"
 brew "nmap"
@@ -80,7 +74,6 @@ cask "microsoft-office"
 cask "mitmproxy"
 cask "obsidian"
 cask "parsec"
-cask "pdfpen"
 cask "rar"
 cask "rectangle"
 cask "signal"
@@ -94,12 +87,3 @@ cask "transmission"
 cask "utm"
 cask "whatsapp"
 cask "wireshark-app"
-mas "1Password for Safari", id: 1569813296
-mas "ColorSlurp", id: 1287239339
-mas "Microsoft Remote Desktop", id: 1295203466
-mas "Paprika Recipe Manager", id: 451907568
-mas "Pixelmator Pro", id: 1289583905
-mas "Tailscale", id: 1475387142
-mas "Windows App", id: 1295203466
-mas "Xcode", id: 497799835
-

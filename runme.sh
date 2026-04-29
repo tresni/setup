@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+set -e
+
 function validate_keys {
 	LOADED=$(ssh-add -ql)
 	if ! [ "$?" -eq "0" ]; then
@@ -20,11 +22,6 @@ function validate_keys {
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-if ! validate_keys; then
-	echo "Load your SSH keys first"
-	exit 1
-fi
-
 # Check if Rossetta is needed/installed
 if [ "$CPUTYPE" = "arm64" ] && ! [ -e "/usr/libexec/rosetta" ]; then
 	sudo softwareupdate --install-rosetta --agree-to-license
@@ -41,9 +38,17 @@ else
 	eval "$(/usr/local/bin/brew shellenv 2> /dev/null || /opt/homebrew/bin/brew shellenv)"
 fi
 
+set +e
 xcode-select --install 2> /dev/null
+set -e
+
 brew bundle install --file=Brewfile
 brew cleanup
+
+if ! validate_keys; then
+	osascript -e 'tell application "1Password" to launch'
+	gum confirm "Are your SSH keys loaded and ready?"
+fi
 
 RUN_MACOS=${RUN_MACOS:-no}
 if chezmoi status > /dev/null ; then
@@ -53,7 +58,7 @@ else
 		echo "backing up ~/.zshrc to ~/.zshrc_setup"
 		mv ~/.zshrc ~/.zshrc_setup
 	fi
-	if ! chezmoi init --apply tresni; then
+	if ! chezmoi init --apply --ssh tresni; then
 		echo "Failed to install dotfiles."
 		exit 1
 	fi
@@ -62,9 +67,16 @@ fi
 
 uv sync --no-dev
 
-uv run ansible-playbook setup.yml
+uv run ansible-playbook setup.yml -K
 
 # This is going to kill iTerm/Terminal/etc so ...
 if [ "$RUN_MACOS" = "yes" ]; then
 	~/.macos
 fi
+
+if ! plutil -extract "Accounts".0."AccountID" raw ~/Library/Preferences/MobileMeAccounts.plist 2>/dev/null; then
+	open x-apple.systempreferences:com.apple.AppleAccount-Settings.extension
+	gum confirm "Are you signed into your apple account?"
+fi
+
+brew bundle install --file Brewfile.mas
