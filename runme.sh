@@ -74,7 +74,7 @@ if [ "$RUN_MACOS" = "yes" ]; then
 	~/.macos
 fi
 
-if ! plutil -extract "Accounts".0."AccountID" raw ~/Library/Preferences/MobileMeAccounts.plist 2>/dev/null; then
+if ! plutil -extract "Accounts".0."AccountID" raw ~/Library/Preferences/MobileMeAccounts.plist &>/dev/null; then
 	open x-apple.systempreferences:com.apple.AppleAccount-Settings.extension
 	gum confirm "Are you signed into your apple account?"
 fi
