@@ -2,13 +2,7 @@
 - name: Setup
   hosts: localhost
   tasks:
-    - name: Gathering custom facts
-      setup:
-        fact_path: "facts.d"
-
     - name: macos
-      import_tasks: tasks/macos.yml
-    - name: repos
-      import_tasks: tasks/repos.yml
-    - name: pipx
-      import_tasks: tasks/pipx.yml
+      ansible.builtin.import_tasks: tasks/macos.yml
+    - name: volta
+      ansible.builtin.import_tasks: tasks/volta.yml

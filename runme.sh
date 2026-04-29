@@ -41,18 +41,9 @@ else
 	eval "$(/usr/local/bin/brew shellenv 2> /dev/null || /opt/homebrew/bin/brew shellenv)"
 fi
 
-brew bundle install --file=Brewfile --no-lock
+xcode-select --install 2> /dev/null
+brew bundle install --file=Brewfile
 brew cleanup
-
-if [ -e ~/.oh-my-zsh ]; then
-    echo "Oh My ZSH already installed"
-else
-    echo "Installing Oh My ZSH"
-	if ! RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" ; then
-		echo "Failed to install Oh My ZSH."
-		exit 1
-	fi
-fi
 
 RUN_MACOS=${RUN_MACOS:-no}
 if chezmoi status > /dev/null ; then
@@ -69,14 +60,11 @@ else
 	RUN_MACOS=yes
 fi
 
-poetry install -n --no-root --only main
+uv sync --no-dev
 
-# shellcheck source=/dev/null
-. ./.venv/bin/activate
-
-ansible-playbook setup.yml
+uv run ansible-playbook setup.yml
 
 # This is going to kill iTerm/Terminal/etc so ...
-if [ $RUN_MACOS = "yes" ]; then
+if [ "$RUN_MACOS" = "yes" ]; then
 	~/.macos
 fi

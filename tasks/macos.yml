@@ -1,27 +1,23 @@
 - name: Configuring sudo to accept touch ID
   become: true
-  lineinfile:
-    path: /etc/pam.d/sudo
-    insertafter: ^auth
-    firstmatch: true
-    line: auth       sufficient     pam_tid.so
+  ansible.builtin.copy:
+    mode: '0444'
+    owner: root
+    group: wheel
+    src: files/etc/pam.d/sudo_local
+    dest: /etc/pam.d/sudo_local
 
 - name: Adding Homebrew ZSH to acceptable shells
   become: true
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/shells
     block: |
       /usr/local/bin/zsh
       /opt/homebrew/bin/zsh
 
-- name: Check .netrc permissions
-  file:
-    path: ~/.netrc
-    mode: 0700
-
 - name: Configure default $PATH
   become: true
-  copy:
+  ansible.builtin.copy:
     mode: '0644'
     owner: root
     group: wheel
