@@ -6,3 +6,5 @@
       ansible.builtin.import_tasks: tasks/macos.yml
     - name: volta
       ansible.builtin.import_tasks: tasks/volta.yml
+    - name: claude
+      ansible.builtin.import_tasks: tasks/claude-code.yml
