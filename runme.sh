@@ -55,8 +55,11 @@ if ! validate_keys; then
 	gum confirm "Are your SSH keys loaded and ready?"
 fi
 
+# From now on, we decide to do this or not at runtime.
 RUN_MACOS=${RUN_MACOS:-no}
-if chezmoi status > /dev/null ; then
+# `chezmoi status` returns 0 if the folder was created but git wasn't properly initialized
+# So we check the git repo with a basic "are you a git repo?"
+if chezmoi status > /dev/null && git -C "$(chezmoi source-path)" status > /dev/null; then
     echo "chezmoi has been initialized"
 else
     if [ -e ~/.zshrc ]; then
@@ -67,7 +70,6 @@ else
 		echo "Failed to install dotfiles."
 		exit 1
 	fi
-	RUN_MACOS=yes
 fi
 
 uv sync --no-dev
