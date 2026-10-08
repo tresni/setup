@@ -19,7 +19,7 @@ function validate_keys {
 	return 1
 }
 
-if ! sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" "SELECT 1" 2>/dev/null; then
+if ! sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" "SELECT 1" &>/dev/null; then
 	open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AllFiles"
 	gum confirm "Does the current terminal have Full Disk Access?"
 fi
@@ -28,7 +28,7 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Check if Rossetta is needed/installed
-if [ "$CPUTYPE" = "arm64" ] && ! [ -e "/usr/libexec/rosetta" ]; then
+if [ "$CPUTYPE" = "arm64" ] && ! pkgutil --pkg-info=com.apple.pkg.RosettaUpdateAuto 2> /dev/null; then
 	sudo softwareupdate --install-rosetta --agree-to-license
 fi
 
@@ -54,6 +54,10 @@ if ! validate_keys; then
 	osascript -e 'tell application "1Password" to launch'
 	gum confirm "Are your SSH keys loaded and ready?"
 fi
+
+while [ -z "$(op account list)" ]; do
+	gum confirm "Have you enabled \"Integrate with 1Password CLI\" in the 1Password settings?"
+done 
 
 # From now on, we decide to do this or not at runtime.
 RUN_MACOS=${RUN_MACOS:-no}
