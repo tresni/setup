@@ -1,5 +1,6 @@
 ---
 - name: Install claude-code
-  ansible.builtin.shell: curl -fsSL https://claude.ai/install.sh | bash
+  ansible.builtin.shell: set -o pipefail && curl -fsSL https://claude.ai/install.sh | bash  # noqa: command-instead-of-module
   args:
+    executable: /bin/bash
     creates: "{{ ansible_env.HOME }}/.local/bin/claude"
